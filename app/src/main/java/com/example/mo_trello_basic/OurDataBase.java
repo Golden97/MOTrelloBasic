@@ -14,25 +14,25 @@ public class OurDataBase extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         sqLiteDatabase.execSQL(
-                "CREATE TABLE IF NOT EXISTS Categories(" +
-                        "ID_Category INTEGER PRIMARY KEY," +
+                "CREATE TABLE IF NOT EXISTS TaskTable(" +
+                        "ID_TaskTable INTEGER PRIMARY KEY AUTOINCREMENT," +
                         "Name TEXT NOT NULL);" +
                         "");
 
         sqLiteDatabase.execSQL(
                 "CREATE TABLE IF NOT EXISTS TaskLists(" +
-                        "ID_TaskList INTEGER PRIMARY KEY," +
-                        "ID_Category INTEGER NOT NULL," +
+                        "ID_TaskList INTEGER PRIMARY KEY AUTOINCREMENT," +
+                        "ID_TaskTable INTEGER NOT NULL," +
                         "Name TEXT NOT NULL," +
-                        "FOREIGN KEY (ID_Category) REFERENCES Categories(ID_Category));" +
+                        "CONSTRAINT fk_TaskTable FOREIGN KEY (ID_TaskTable) REFERENCES TaskTable(ID_TaskTable) ON DELETE CASCADE);" +
                         "");
 
         sqLiteDatabase.execSQL(
                 "CREATE TABLE IF NOT EXISTS Tasks(" +
-                        "ID_Task INTEGER PRIMARY KEY," +
+                        "ID_Task INTEGER PRIMARY KEY AUTOINCREMENT," +
                         "ID_TaskList INTEGER NOT NULL," +
                         "Name TEXT NOT NULL," +
-                        "FOREIGN KEY (ID_TaskList) REFERENCES TaskLists(ID_TaskList));" +
+                        "CONSTRAINT fk_TaskLists FOREIGN KEY (ID_TaskList) REFERENCES TaskLists(ID_TaskList) ON DELETE CASCADE);" +
                         "");
     }
 
@@ -41,29 +41,44 @@ public class OurDataBase extends SQLiteOpenHelper {
 
     }
 
-    public void addCategory(TaskTable table) {
+    public void addTaskTableToDB(TaskTable table) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values  = new ContentValues();
-        values.put("ID_Task", table.id);
         values.put("Name", table.name);
-        db.insertOrThrow("Categories", null, values);
+        db.insertOrThrow("TaskTable", null, values);
     }
 
-    public void addTaskList(TaskList taskList, TaskTable table) {
+    public void addTaskListToDB(TaskList taskList, TaskTable table) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values  = new ContentValues();
-        values.put("ID_TaskList", taskList.id);
-        values.put("ID_Category", table.id);
+        values.put("ID_TaskTable", table.id);
         values.put("Name", taskList.name);
         db.insertOrThrow("TaskLists", null, values);
     }
 
-    public void addTask(Task task, TaskList taskList) {
+    public void addTaskToDB(Task task, TaskList taskList) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values  = new ContentValues();
-        values.put("ID_Task", task.id);
         values.put("ID_TaskList", taskList.id);
         values.put("Name", task.name);
         db.insertOrThrow("Tasks", null, values);
+    }
+
+    public void removeTaskTableFromDB(TaskTable table) {
+        SQLiteDatabase db = getWritableDatabase();
+        String[] args = {"" + table.id};
+        db.delete("TaskTable", "ID_TaskTable=?", args);
+    }
+
+    public void removeTaskListFromDB(TaskList taskList) {
+        SQLiteDatabase db = getWritableDatabase();
+        String[] args = {"" + taskList.id};
+        db.delete("TaskLists", "ID_TaskList=?", args);
+    }
+
+    public void removeTaskFromDB(Task task) {
+        SQLiteDatabase db = getWritableDatabase();
+        String[] args = {"" + task.id};
+        db.delete("Tasks", "ID_Task=?", args);
     }
 }
