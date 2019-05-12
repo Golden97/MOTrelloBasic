@@ -54,7 +54,9 @@ public class TableActivity extends AppCompatActivity {
 
         EditText etNewItem = findViewById(R.id.etNewTaskList);
         String itemText = etNewItem.getText().toString();
-        itemsAdapter.add(itemText);
+        if(!itemText.equals("")) {
+            itemsAdapter.add(itemText);
+        }
         etNewItem.setText("");
     }
 }

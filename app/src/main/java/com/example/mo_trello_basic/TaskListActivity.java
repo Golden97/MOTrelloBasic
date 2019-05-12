@@ -52,7 +52,9 @@ public class TaskListActivity extends AppCompatActivity {
     public void onAddTask(View v){
         EditText etNewItem = findViewById(R.id.etNewTask);
         String itemText = etNewItem.getText().toString();
-        itemsAdapter.add(itemText);
+        if(!itemText.equals("")) {
+            itemsAdapter.add(itemText);
+        }
         etNewItem.setText("");
     }
 }
