@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         // ADD HERE
-        lvItems = findViewById(R.id.lvItems);
+        lvItems = findViewById(R.id.lvTaskTables);
         items = new ArrayList<>();
         itemsAdapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1, items);
@@ -44,8 +44,8 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void onAddItem(View v) {
-        EditText etNewItem = (EditText) findViewById(R.id.etNewItem);
+    public void onAddTaskTable(View v) {
+        EditText etNewItem = (EditText) findViewById(R.id.etNewTaskTable);
         String itemText = etNewItem.getText().toString();
         itemsAdapter.add(itemText);
         etNewItem.setText("");
