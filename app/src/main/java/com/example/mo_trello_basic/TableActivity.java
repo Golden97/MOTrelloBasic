@@ -20,9 +20,8 @@ public class TableActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        // ADD HERE
-        lvItems = findViewById(R.id.lvTaskTables);
+        setContentView(R.layout.activity_table);
+        lvItems = findViewById(R.id.lvTaskLists);
         items = new ArrayList<>();
         itemsAdapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1, items);
@@ -36,6 +35,15 @@ public class TableActivity extends AppCompatActivity {
                 openTaskListActivity();
             }
         });
+
+        lvItems.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                items.remove(position);
+                itemsAdapter.notifyDataSetChanged();
+                return true;
+            }
+        });
     }
 
     public void openTaskListActivity() {
@@ -46,7 +54,7 @@ public class TableActivity extends AppCompatActivity {
     public void onAddTaskList(View v){
         int aeee;
 
-        EditText etNewItem = findViewById(R.id.etNewTaskTable);
+        EditText etNewItem = findViewById(R.id.etNewTaskList);
         String itemText = etNewItem.getText().toString();
         itemsAdapter.add(itemText);
         etNewItem.setText("");

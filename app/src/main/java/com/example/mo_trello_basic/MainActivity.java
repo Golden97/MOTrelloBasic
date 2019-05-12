@@ -38,11 +38,8 @@ public class MainActivity extends AppCompatActivity {
         lvItems.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                // Remove the item within array at position
                 items.remove(position);
-                // Refresh the adapter
                 itemsAdapter.notifyDataSetChanged();
-                // Return true consumes the long click event (marks it handled)
                 return true;
             }
         });
@@ -54,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onAddTaskTable(View v) {
-        EditText etNewItem = (EditText) findViewById(R.id.etNewTaskTable);
+        EditText etNewItem = findViewById(R.id.etNewTaskTable);
         String itemText = etNewItem.getText().toString();
         itemsAdapter.add(itemText);
         etNewItem.setText("");
