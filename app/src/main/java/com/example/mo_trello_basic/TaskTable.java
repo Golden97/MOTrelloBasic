@@ -4,17 +4,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TaskTable {
+    int id;
+    private int lastIdTaskList=-1;
     String name;
     List<TaskList> taskLists;
 
-    TaskTable(String nameFromUser){
+    TaskTable(String nameFromUser, int idFromUser){
+        id=idFromUser;
         name=nameFromUser;
         taskLists=new ArrayList<TaskList>();
     }
+
+    public int getLastIdTaskList() {
+        return lastIdTaskList;
+    }
+
     void addTaskList(TaskList taskList){
-        /*Task newTask=new Task(name,id);
-        tables.add(newTaskTable);
-*/
+        lastIdTaskList++;
+        taskLists.add(taskList);
     }
 
     void removeTaskList(TaskList taskList){
