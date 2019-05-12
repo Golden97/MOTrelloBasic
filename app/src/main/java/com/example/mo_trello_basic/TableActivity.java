@@ -18,9 +18,9 @@ public class TableActivity extends AppCompatActivity {
     private ListView lvItems;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_table);
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_table);
         lvItems = findViewById(R.id.lvTaskLists);
         items = new ArrayList<>();
         itemsAdapter = new ArrayAdapter<>(this,
