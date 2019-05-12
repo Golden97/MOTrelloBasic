@@ -22,7 +22,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        // ADD HERE
         lvItems = findViewById(R.id.lvTaskTables);
         items = new ArrayList<>();
         itemsAdapter = new ArrayAdapter<>(this,
@@ -35,7 +34,18 @@ public class MainActivity extends AppCompatActivity {
                 openTableActivity();
             }
         });
-        setupListViewListener();
+
+        lvItems.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                // Remove the item within array at position
+                items.remove(position);
+                // Refresh the adapter
+                itemsAdapter.notifyDataSetChanged();
+                // Return true consumes the long click event (marks it handled)
+                return true;
+            }
+        });
     }
 
     public void openTableActivity() {
@@ -50,20 +60,4 @@ public class MainActivity extends AppCompatActivity {
         etNewItem.setText("");
     }
 
-    private void setupListViewListener() {
-        lvItems.setOnItemLongClickListener(
-                new AdapterView.OnItemLongClickListener() {
-                    @Override
-                    public boolean onItemLongClick(AdapterView<?> adapter,
-                                                   View item, int pos, long id) {
-                        // Remove the item within array at position
-                        items.remove(pos);
-                        // Refresh the adapter
-                        itemsAdapter.notifyDataSetChanged();
-                        // Return true consumes the long click event (marks it handled)
-                        return true;
-                    }
-
-                });
-    }
 }
