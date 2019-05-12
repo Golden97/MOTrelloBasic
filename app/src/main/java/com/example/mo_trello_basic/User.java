@@ -10,11 +10,26 @@ public class User {
         tables=new ArrayList<TaskTable>();
     }
 
+    public TaskTable get(int index){
+        return tables.get(index);
+    }
+
     void addTable(String name){
         int id=tables.size();
-        TaskTable tmp=new TaskTable(name,id);
+        TaskTable newTaskTable=new TaskTable(name,id);
+        tables.add(newTaskTable);
     }
-    void removeTable(){
-
+    public int findTaskTableByName(String nameA){
+        for(int i=0;i<tables.size();i++){
+            if(tables.get(i).name.equals(nameA))
+                return i;
+        }
+        return -1;
+    }
+    void removeTable(String name){//modify also in main activity
+        int index=findTaskTableByName(name);
+        if(index!=-1) {
+            tables.remove(index);
+        }
     }
 }

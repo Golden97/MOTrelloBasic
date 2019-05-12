@@ -14,7 +14,10 @@ public class TaskTable {
         taskLists=new ArrayList<TaskList>();
     }
     void addTaskList(TaskList taskList){
-
+        /*int id=taskLists.size();
+        Task newTask=new Task(name,id);
+        tables.add(newTaskTable);
+*/
     }
 
     void removeTaskList(TaskList taskList){
