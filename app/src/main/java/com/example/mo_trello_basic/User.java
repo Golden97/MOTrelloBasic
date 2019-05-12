@@ -4,20 +4,37 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class User {
-    List<TaskTable> tables;
+    List<TaskTable> tables=new ArrayList<TaskTable>(){
+        @Override
+        public boolean add(TaskTable e) {
+            boolean allOk = super.add(e);
+            return allOk;
+        }
+        /*@Override
+        public boolean remove(Object e) {
+            boolean allOk=super.remove(e);
+            String name=e.name;
+            for(int i=0;i<tables.size();i++){
+                if(name.equals(tables.get(i).name)) {
+                    tables.remove(i);
+                    break;
+                }
+            }
+            return allOk;
+        }*/
+    };
 
-    User(){
-        tables=new ArrayList<TaskTable>();
-    }
+
+    /*User(){
+
+    }*/
 
     public TaskTable get(int index){
         return tables.get(index);
     }
 
-    void addTable(String name){
-        int id=tables.size();
-        TaskTable newTaskTable=new TaskTable(name,id);
-        tables.add(newTaskTable);
+    void addTable(TaskTable table){
+        tables.add(table);
     }
     public int findTaskTableByName(String nameA){
         for(int i=0;i<tables.size();i++){
@@ -26,10 +43,7 @@ public class User {
         }
         return -1;
     }
-    void removeTable(String name){//modify also in main activity
-        int index=findTaskTableByName(name);
-        if(index!=-1) {
-            tables.remove(index);
-        }
+    void removeTable(TaskTable table){//modify also in main activity
+            tables.remove(table);
     }
 }
