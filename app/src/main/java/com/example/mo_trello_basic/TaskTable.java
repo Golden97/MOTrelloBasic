@@ -9,6 +9,12 @@ public class TaskTable {
     String name;
     List<TaskList> taskLists;
 
+    TaskTable(){
+        id=0;
+        lastIdTaskList=-1;
+        name="";
+    }
+
     TaskTable(String nameFromUser, int idFromUser){
         id=idFromUser;
         name=nameFromUser;

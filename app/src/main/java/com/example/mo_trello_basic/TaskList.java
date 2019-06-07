@@ -2,7 +2,7 @@ package com.example.mo_trello_basic;
 
 import java.util.List;
 
-public class TaskList {
+public class TaskList  {
     int id;
     String name;
     List<Task> taskList;

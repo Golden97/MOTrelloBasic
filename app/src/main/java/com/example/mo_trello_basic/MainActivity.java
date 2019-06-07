@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onAddTaskTable(View v) {
-        EditText etNewItem = findViewById(R.id.etNewTaskTable);
+        EditText etNewItem = findViewById(R.id.etNewItem);
         String itemText = etNewItem.getText().toString();
         if(!itemText.equals("")) {
             itemsAdapter.add(itemText);
