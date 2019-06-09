@@ -68,8 +68,12 @@ public class MainActivity extends AppCompatActivity {
         etNewItem.setText("");
 
         TaskTable tb = new TaskTable(itemText, 1);
-        db.getWritableDatabase();
-        db.addTaskTableToDB(tb);
+        try {
+            db.getWritableDatabase();
+            db.addTaskTableToDB(tb);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }
