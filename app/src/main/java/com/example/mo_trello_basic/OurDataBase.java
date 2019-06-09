@@ -16,12 +16,12 @@ public class OurDataBase extends SQLiteOpenHelper {
         }
 
         @Override
-        public void onCreate(SQLiteDatabase sqLiteDatabase) {
-            sqLiteDatabase.execSQL( "CREATE TABLE IF NOT EXISTS TaskTable(" +
+        public void onCreate(SQLiteDatabase dbb) {
+            db.execSQL( "CREATE TABLE IF NOT EXISTS TaskTable(" +
                             "ID_TaskTable INTEGER PRIMARY KEY AUTOINCREMENT," +
                             "Name TEXT  DEFAULT NULL);");
 
-            sqLiteDatabase.execSQL(
+            db.execSQL(
                     "CREATE TABLE IF NOT EXISTS TaskLists(" +
                             "ID_TaskList INTEGER PRIMARY KEY AUTOINCREMENT," +
                             "ID_TaskTable INTEGER DEFAULT NULL," +
@@ -29,7 +29,7 @@ public class OurDataBase extends SQLiteOpenHelper {
                             "CONSTRAINT fk_TaskTable FOREIGN KEY (ID_TaskTable) REFERENCES TaskTable(ID_TaskTable) ON DELETE CASCADE);" +
                             "");
 
-            sqLiteDatabase.execSQL(
+            db.execSQL(
                     "CREATE TABLE IF NOT EXISTS Tasks(" +
                             "ID_Task INTEGER PRIMARY KEY AUTOINCREMENT," +
                             "ID_TaskList INTEGER DEFAULT NULL," +
