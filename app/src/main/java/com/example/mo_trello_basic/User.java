@@ -1,11 +1,15 @@
 package com.example.mo_trello_basic;
 
+import android.content.ContentValues;
+import android.content.Context;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class User {
     private int lastId=0;
     List<TaskTable> tables;
+    OurDataBase db = new OurDataBase();
 
     public boolean remove(TaskTable e) {
             boolean allOk=true;
@@ -34,6 +38,7 @@ public class User {
 
     void addTable(TaskTable table){
         tables.add(table);
+
         lastId++;
     }
     public int findTaskTableByName(String nameA){

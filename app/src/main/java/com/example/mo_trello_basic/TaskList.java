@@ -6,6 +6,12 @@ public class TaskList {
     int id;
     String name;
     List<Task> taskList;
+    public static TaskTable actualTable;
+
+    public TaskList(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 
     void addTask(Task task){
 

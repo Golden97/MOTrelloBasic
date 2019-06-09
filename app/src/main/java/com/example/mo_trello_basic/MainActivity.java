@@ -14,9 +14,11 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static int counter = 0;
     private ArrayList<String> items;
     private ArrayAdapter<String> itemsAdapter;
     private ListView lvItems;
+    public static OurDataBase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
         lvItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                TaskList.actualTable=new TaskTable(view.toString(),1);
                 openTableActivity();
             }
         });
@@ -43,11 +46,14 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
+
+        db = new OurDataBase(this);
     }
 
     public void openTableActivity() {
         Intent intent = new Intent(this, TableActivity.class);
         startActivity(intent);
+
     }
 
     public void onAddTaskTable(View v) {
@@ -58,7 +64,9 @@ public class MainActivity extends AppCompatActivity {
         }
         etNewItem.setText("");
 
-
+        TaskTable tb = new TaskTable(itemText, 1);
+        db.getWritableDatabase();
+        db.addTaskTableToDB(tb);
     }
 
 }

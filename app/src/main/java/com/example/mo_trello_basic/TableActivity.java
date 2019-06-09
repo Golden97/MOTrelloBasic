@@ -11,6 +11,8 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 
+import static com.example.mo_trello_basic.MainActivity.db;
+
 public class TableActivity extends AppCompatActivity {
 
     private ArrayList<String> items;
@@ -31,6 +33,7 @@ public class TableActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 openTaskListActivity();
+
             }
         });
 
@@ -47,6 +50,7 @@ public class TableActivity extends AppCompatActivity {
     public void openTaskListActivity() {
         Intent intent = new Intent(this, TaskListActivity.class);
         startActivity(intent);
+
     }
 
     public void onAddTaskList(View v){
@@ -58,5 +62,9 @@ public class TableActivity extends AppCompatActivity {
             itemsAdapter.add(itemText);
         }
         etNewItem.setText("");
+
+        TaskList tl = new TaskList(1, itemText);
+        db.getWritableDatabase();
+        db.addTaskListToDB(tl, tl.actualTable);
     }
 }
