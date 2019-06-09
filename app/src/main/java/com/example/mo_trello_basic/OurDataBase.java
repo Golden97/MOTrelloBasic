@@ -52,7 +52,7 @@ public class OurDataBase extends SQLiteOpenHelper {
 
         public void addTaskListToDB(TaskList taskList, TaskTable table) {
             db = this.getWritableDatabase();
-            db.execSQL("INSERT INTO TaskList (ID_TaskTable, Name) "
+            db.execSQL("INSERT INTO TaskLists (ID_TaskTable, Name) "
                     + "VALUES( (SELECT ID_TaskTable FROM TaskTable"
                     + " WHERE Name=" + table.name + ")," + taskList.name + ")");
         }

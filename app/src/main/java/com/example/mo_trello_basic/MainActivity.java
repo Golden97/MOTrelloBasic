@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        db = new OurDataBase(getApplicationContext());
+        db = new OurDataBase(this);
     }
 
     public void openTableActivity() {
@@ -69,7 +69,6 @@ public class MainActivity extends AppCompatActivity {
 
         TaskTable tb = new TaskTable(itemText, 1);
         try {
-            db.getWritableDatabase();
             db.addTaskTableToDB(tb);
         } catch (Exception e) {
             e.printStackTrace();

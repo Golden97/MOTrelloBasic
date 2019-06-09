@@ -65,7 +65,6 @@ public class TableActivity extends AppCompatActivity {
 
         TaskList tl = new TaskList(1, itemText);
         try {
-            db.getWritableDatabase();
             db.addTaskListToDB(tl, tl.actualTable);
         } catch (Exception e) {
             e.printStackTrace();
