@@ -5,8 +5,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-public class
-    private class OurDataBase extends SQLiteOpenHelper {
+public class OurDataBase extends SQLiteOpenHelper {
 
         private static SQLiteDatabase db;
         private static ContentValues values;
@@ -18,7 +17,9 @@ public class
 
         @Override
         public void onCreate(SQLiteDatabase sqLiteDatabase) {
-            //sqLiteDatabase.execSQL(DB_CREATE_TASK_TABLE);
+            sqLiteDatabase.execSQL( "CREATE TABLE IF NOT EXISTS TaskTable(" +
+                            "ID_TaskTable INTEGER PRIMARY KEY AUTOINCREMENT," +
+                            "Name TEXT  DEFAULT NULL);");
 
             sqLiteDatabase.execSQL(
                     "CREATE TABLE IF NOT EXISTS TaskLists(" +

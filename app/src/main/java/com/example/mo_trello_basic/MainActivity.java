@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        db = new OurDataBase(this);
+        db = new OurDataBase(getApplicationContext());
     }
 
     public void openTableActivity() {

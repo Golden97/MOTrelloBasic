@@ -9,7 +9,6 @@ import java.util.List;
 public class User {
     private int lastId=0;
     List<TaskTable> tables;
-    OurDataBase db = new OurDataBase();
 
     public boolean remove(TaskTable e) {
             boolean allOk=true;
