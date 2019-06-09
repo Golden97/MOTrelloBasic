@@ -1,21 +1,20 @@
 package com.example.mo_trello_basic;
 
+import android.provider.BaseColumns;
+
 public class DataBaseManager {
+    public static final String DB_NAME = "trello.db";
+    public static final int DB_VERSION = 1;
 
-    public static final String DB_CREATE_TASK_TABLE =   "CREATE TABLE IF NOT EXISTS TaskTable(" +
-                                                        "ID_TaskTable INTEGER PRIMARY KEY AUTOINCREMENT," +
-                                                        "Name TEXT  DEFAULT NULL);";
+    public class DataEntry implements BaseColumns {
+        public static final String TASKTABLES = "TaskTables";
+        public static final String TASKLISTS = "TaskLists";
+        public static final String TASKS = "Tasks";
 
-    public static final String DB_CREATE_TASK_LIST =    "CREATE TABLE IF NOT EXISTS TaskLists(" +
-                                                        "ID_TaskList INTEGER PRIMARY KEY AUTOINCREMENT," +
-                                                        "ID_TaskTable INTEGER DEFAULT NULL," +
-                                                        "Name TEXT NOT NULL," +
-                                                        "CONSTRAINT fk_TaskTable FOREIGN KEY (ID_TaskTable) REFERENCES TaskTable(ID_TaskTable) ON DELETE CASCADE);";
-
-    public static final String DB_CREATE_TASKS =    "CREATE TABLE IF NOT EXISTS Tasks(" +
-                                                        "ID_Task INTEGER PRIMARY KEY AUTOINCREMENT," +
-                                                        "ID_TaskList INTEGER DEFAULT NULL," +
-                                                        "Name TEXT NOT NULL," +
-                                                        "CONSTRAINT fk_TaskLists FOREIGN KEY (ID_TaskList) REFERENCES TaskLists(ID_TaskList) ON DELETE CASCADE);";
+        public static final String ID_TASKTABLE = "ID_TaskTable";
+        public static final String ID_TASKLIST = "ID_TaskList";
+        public static final String ID_TASK = "ID_Task";
+        public static final String NAME = "Name";
+    }
 
 }

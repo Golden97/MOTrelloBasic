@@ -16,12 +16,24 @@ public class OurDataBase extends SQLiteOpenHelper {
 
         @Override
         public void onCreate(SQLiteDatabase db) {
-            db.execSQL( "CREATE TABLE IF NOT EXISTS TaskTable(" +
-                            "ID_TaskTable INTEGER PRIMARY KEY AUTOINCREMENT," +
-                            "Name TEXT  DEFAULT NULL);");
+            String createTaskTables = "CREATE TABLE " + DataBaseManager.DataEntry.TASKTABLES + " ( " +
+                    DataBaseManager.DataEntry.ID_TASKTABLE + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    DataBaseManager.DataEntry.NAME + " TEXT NOT NULL);";
+
+            db.execSQL(createTaskTables);
+
+
+            String createTaskLists = "CREATE TABLE " + DataBaseManager.DataEntry.TASKLISTS + " ( " +
+                    DataBaseManager.DataEntry.ID_TASKLIST + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    DataBaseManager.DataEntry.ID_TASKTABLE + " INTEGER, " +
+                    DataBaseManager.DataEntry.NAME + " TEXT NOT NULL, " +
+                    "CONSTRAINT fk_TaskTable FOREIGN KEY (ID_TaskTable) REFERENCES TaskTable(ID_TaskTable) ON DELETE CASCADE);";
+
+            db.execSQL(createTaskLists);
+
 
             db.execSQL(
-                    "CREATE TABLE IF NOT EXISTS TaskLists(" +
+                    "CREATE TABLE TaskLists(" +
                             "ID_TaskList INTEGER PRIMARY KEY AUTOINCREMENT," +
                             "ID_TaskTable INTEGER DEFAULT NULL," +
                             "Name TEXT NOT NULL," +
@@ -29,7 +41,7 @@ public class OurDataBase extends SQLiteOpenHelper {
                             "");
 
             db.execSQL(
-                    "CREATE TABLE IF NOT EXISTS Tasks(" +
+                    "CREATE TABLE Tasks(" +
                             "ID_Task INTEGER PRIMARY KEY AUTOINCREMENT," +
                             "ID_TaskList INTEGER DEFAULT NULL," +
                             "Name TEXT NOT NULL," +
