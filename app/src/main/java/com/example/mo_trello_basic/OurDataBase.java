@@ -7,7 +7,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class OurDataBase extends SQLiteOpenHelper {
 
-        private static SQLiteDatabase db;
         private static ContentValues values;
         private static final String TaskList = "TaskList";
 
@@ -16,7 +15,7 @@ public class OurDataBase extends SQLiteOpenHelper {
         }
 
         @Override
-        public void onCreate(SQLiteDatabase dbb) {
+        public void onCreate(SQLiteDatabase db) {
             db.execSQL( "CREATE TABLE IF NOT EXISTS TaskTable(" +
                             "ID_TaskTable INTEGER PRIMARY KEY AUTOINCREMENT," +
                             "Name TEXT  DEFAULT NULL);");
@@ -44,40 +43,40 @@ public class OurDataBase extends SQLiteOpenHelper {
         }
 
         public void addTaskTableToDB(TaskTable table) {
-            db = this.getWritableDatabase();
+            SQLiteDatabase db = this.getWritableDatabase();
             values  = new ContentValues();
             values.put("Name", table.name);
             db.insertOrThrow("TaskTable", null, values);
         }
 
         public void addTaskListToDB(TaskList taskList, TaskTable table) {
-            db = this.getWritableDatabase();
+            SQLiteDatabase db = this.getWritableDatabase();
             db.execSQL("INSERT INTO TaskLists (ID_TaskTable, Name) "
                     + "VALUES( (SELECT ID_TaskTable FROM TaskTable"
                     + " WHERE Name=" + table.name + ")," + taskList.name + ")");
         }
 
         public void addTaskToDB(Task task, TaskList taskList) {
-            db = getWritableDatabase();
+            SQLiteDatabase db = getWritableDatabase();
             db.execSQL("INSERT INTO Tasks (ID_TaskList, Name) "
                     + "VALUES( (SELECT ID_TaskList FROM TaskList"
                     + " WHERE Name=" + taskList.name + ")," + task.name + ")");
         }
 
         public void removeTaskTableFromDB(TaskTable table) {
-            db = getWritableDatabase();
+            SQLiteDatabase db = getWritableDatabase();
             String[] args = {"" + table.id};
             db.delete("TaskTable", "ID_TaskTable=?", args);
         }
 
         public void removeTaskListFromDB(TaskList taskList) {
-            db = getWritableDatabase();
+            SQLiteDatabase db = getWritableDatabase();
             String[] args = {"" + taskList.id};
             db.delete("TaskLists", "ID_TaskList=?", args);
         }
 
         public void removeTaskFromDB(Task task) {
-            db = getWritableDatabase();
+            SQLiteDatabase db = getWritableDatabase();
             String[] args = {"" + task.id};
             db.delete("Tasks", "ID_Task=?", args);
         }
