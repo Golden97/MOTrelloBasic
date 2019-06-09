@@ -64,7 +64,11 @@ public class TableActivity extends AppCompatActivity {
         etNewItem.setText("");
 
         TaskList tl = new TaskList(1, itemText);
-        db.getWritableDatabase();
-        db.addTaskListToDB(tl, tl.actualTable);
+        try {
+            db.getWritableDatabase();
+            db.addTaskListToDB(tl, tl.actualTable);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
