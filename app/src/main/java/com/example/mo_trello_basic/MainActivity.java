@@ -1,6 +1,8 @@
 package com.example.mo_trello_basic;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -50,7 +52,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        db = new OurDataBase(this);
+        db = new OurDataBase(getApplicationContext());
+        Cursor a=db.getTTfromDB();
+        while(a.moveToNext()){
+            itemsAdapter.add(a.getString(0));
+        }
     }
 
     public void openTableActivity() {
