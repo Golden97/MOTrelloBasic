@@ -75,6 +75,7 @@ public class OurDataBase extends SQLiteOpenHelper {
 
         public Cursor getTTfromDB() {
             String[] col = {DataBaseManager.DataEntry.ID_TASKTABLE, DataBaseManager.DataEntry.NAME};
+
             SQLiteDatabase db = this.getReadableDatabase();
             Cursor cur = db.query("TaskTables", col, null, null, null, null, null );
             return cur;
