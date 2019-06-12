@@ -11,6 +11,8 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 
+import static com.example.mo_trello_basic.MainActivity.db;
+
 public class TaskListActivity extends AppCompatActivity {
 
     private ArrayList<String> items;
@@ -37,6 +39,7 @@ public class TaskListActivity extends AppCompatActivity {
         lvItems.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                deleteTask(view.toString());
                 items.remove(position);
                 itemsAdapter.notifyDataSetChanged();
                 return true;
@@ -49,12 +52,28 @@ public class TaskListActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void onAddTask(View v){
+    public void onAddTask(View v) {
         EditText etNewItem = findViewById(R.id.etNewTask);
         String itemText = etNewItem.getText().toString();
-        if(!itemText.equals("")) {
+        if (!itemText.equals("")) {
             itemsAdapter.add(itemText);
         }
         etNewItem.setText("");
+
+        Task task = new Task(itemText);
+
+        try {
+            db.addTaskToDB(task);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteTask(String name) {
+        try {
+            db.removeTaskFromDB(name);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

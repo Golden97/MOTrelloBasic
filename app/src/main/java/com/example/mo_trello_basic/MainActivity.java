@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
         lvItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                TaskList.actualTable=new TaskTable(view.toString(),1);
+                TaskList.actualTaskTable = view.toString();
                 openTableActivity();
             }
         });
@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
         lvItems.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                deleteTaskTable(view.toString());
                 items.remove(position);
                 itemsAdapter.notifyDataSetChanged();
                 return true;
@@ -73,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
         }
         etNewItem.setText("");
 
-        TaskTable tb = new TaskTable(itemText, 1);
+        TaskTable tb = new TaskTable(itemText);
         try {
             db.addTaskTableToDB(tb);
         } catch (Exception e) {
@@ -81,4 +82,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void deleteTaskTable(String name) {
+        try {
+            db.removeTaskTableFromDB(name);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

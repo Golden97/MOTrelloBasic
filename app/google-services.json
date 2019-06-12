@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "685932387856",
+    "firebase_url": "https://motrellobasic.firebaseio.com",
+    "project_id": "motrellobasic",
+    "storage_bucket": "motrellobasic.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:685932387856:android:837426d9bcce6aeb",
+        "android_client_info": {
+          "package_name": "com.example.mo_trello_basic"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "685932387856-nlntg1vl2mjibupq5scmgq55hpua4vf6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.mo_trello_basic",
+            "certificate_hash": "42bcc25b96d432944a5779f7eb9e59455f4b3a5d"
+          }
+        },
+        {
+          "client_id": "685932387856-u59q4bj3d2o4fba0e7eu2dkpioju6ive.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAgJxRufl57dR-K9OcRnnjsqbzbdqEUkGQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "685932387856-u59q4bj3d2o4fba0e7eu2dkpioju6ive.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

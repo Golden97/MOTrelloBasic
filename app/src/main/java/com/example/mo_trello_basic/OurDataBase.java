@@ -12,7 +12,7 @@ public class OurDataBase extends SQLiteOpenHelper {
         private static ContentValues values;
 
         public OurDataBase(Context context) {
-            super(context, "trello.db", null, 3);
+            super(context, "trello.db", null, 1);
 
         }
 
@@ -43,15 +43,6 @@ public class OurDataBase extends SQLiteOpenHelper {
 
             db.execSQL(createTaskLists);
 
-
-            /*db.execSQL(
-                    "CREATE TABLE TaskLists(" +
-                            "ID_TaskList INTEGER PRIMARY KEY AUTOINCREMENT," +
-                            "ID_TaskTable INTEGER DEFAULT NULL," +
-                            "Name TEXT NOT NULL," +
-                            "CONSTRAINT fk_TaskTable FOREIGN KEY (ID_TaskTable) REFERENCES TaskTable(ID_TaskTable) ON DELETE CASCADE);" +
-                            "");
-        */
             db.execSQL(
                     "CREATE TABLE Tasks(" +
                             "ID_Task INTEGER PRIMARY KEY AUTOINCREMENT," +
@@ -66,13 +57,6 @@ public class OurDataBase extends SQLiteOpenHelper {
 
         }
 
-        public void addTaskTableToDB(TaskTable table) {
-            SQLiteDatabase db = this.getWritableDatabase();
-            values  = new ContentValues();
-            values.put("Name", table.name);
-            db.insertOrThrow("TaskTables", null, values);
-        }
-
         public Cursor getTTfromDB() {
             String[] col = {DataBaseManager.DataEntry.ID_TASKTABLE, DataBaseManager.DataEntry.NAME};
 
@@ -81,35 +65,42 @@ public class OurDataBase extends SQLiteOpenHelper {
             return cur;
         }
 
-        public void addTaskListToDB(TaskList taskList, TaskTable table) {
+        public void addTaskTableToDB(TaskTable table) {
             SQLiteDatabase db = this.getWritableDatabase();
-            db.execSQL("INSERT INTO TaskLists (ID_TaskTable, Name) "
-                    + "VALUES( (SELECT ID_TaskTable FROM TaskTable"
-                    + " WHERE Name=" + table.name + ")," + taskList.name + ")");
+            values  = new ContentValues();
+            values.put("Name", table.name);
+            db.insertOrThrow(DataBaseManager.DataEntry.TASKTABLES, null, values);
         }
 
-        public void addTaskToDB(Task task, TaskList taskList) {
-            SQLiteDatabase db = getWritableDatabase();
-            db.execSQL("INSERT INTO Tasks (ID_TaskList, Name) "
-                    + "VALUES( (SELECT ID_TaskList FROM TaskList"
-                    + " WHERE Name=" + taskList.name + ")," + task.name + ")");
+        public void addTaskListToDB(TaskList taskList) {
+            SQLiteDatabase db = this.getWritableDatabase();
+            db.execSQL("INSERT INTO " + DataBaseManager.DataEntry.TASKLISTS + " (" + DataBaseManager.DataEntry.ID_TASKLIST + ", Name) "
+                    + "VALUES( (SELECT " + DataBaseManager.DataEntry.ID_TASKTABLE + " FROM " + DataBaseManager.DataEntry.TASKTABLES
+                    + " WHERE Name=" + taskList.actualTaskTable + ")," + taskList.name + ")");
         }
 
-        public void removeTaskTableFromDB(TaskTable table) {
+        public void addTaskToDB(Task task) {
             SQLiteDatabase db = getWritableDatabase();
-            String[] args = {"" + table.id};
-            db.delete("TaskTable", "ID_TaskTable=?", args);
+            db.execSQL("INSERT INTO " + DataBaseManager.DataEntry.TASKS + " (" + DataBaseManager.DataEntry.ID_TASKLIST + ", Name) "
+                    + "VALUES( (SELECT " + DataBaseManager.DataEntry.ID_TASKLIST + " FROM " + DataBaseManager.DataEntry.TASKLISTS
+                    + " WHERE Name=" + task.actualTaskList + ")," + task.name + ")");
         }
 
-        public void removeTaskListFromDB(TaskList taskList) {
+        public void removeTaskTableFromDB(String name) {
             SQLiteDatabase db = getWritableDatabase();
-            String[] args = {"" + taskList.id};
-            db.delete("TaskLists", "ID_TaskList=?", args);
+            String[] args = {"" + name};
+            db.delete(DataBaseManager.DataEntry.TASKTABLES, "Name=?", args);
         }
 
-        public void removeTaskFromDB(Task task) {
+        public void removeTaskListFromDB(String name) {
             SQLiteDatabase db = getWritableDatabase();
-            String[] args = {"" + task.id};
-            db.delete("Tasks", "ID_Task=?", args);
+            String[] args = {"" + name};
+            db.delete(DataBaseManager.DataEntry.TASKLISTS, "Name=?", args);
+        }
+
+        public void removeTaskFromDB(String name) {
+            SQLiteDatabase db = getWritableDatabase();
+            String[] args = {"" + name};
+            db.delete(DataBaseManager.DataEntry.TASKS, "Name=?", args);
         }
     }

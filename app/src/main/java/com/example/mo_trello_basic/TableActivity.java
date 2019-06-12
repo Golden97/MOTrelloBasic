@@ -32,14 +32,15 @@ public class TableActivity extends AppCompatActivity {
         lvItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Task.actualTaskList = view.toString();
                 openTaskListActivity();
-
             }
         });
 
         lvItems.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                deleteTaskList(view.toString());
                 items.remove(position);
                 itemsAdapter.notifyDataSetChanged();
                 return true;
@@ -50,12 +51,9 @@ public class TableActivity extends AppCompatActivity {
     public void openTaskListActivity() {
         Intent intent = new Intent(this, TaskListActivity.class);
         startActivity(intent);
-
     }
 
     public void onAddTaskList(View v){
-        int aeee;
-
         EditText etNewItem = findViewById(R.id.etNewTaskList);
         String itemText = etNewItem.getText().toString();
         if(!itemText.equals("")) {
@@ -63,9 +61,17 @@ public class TableActivity extends AppCompatActivity {
         }
         etNewItem.setText("");
 
-        TaskList tl = new TaskList(1, itemText);
+        TaskList tl = new TaskList(itemText);
         try {
-            db.addTaskListToDB(tl, tl.actualTable);
+            db.addTaskListToDB(tl);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteTaskList(String name) {
+        try {
+            db.removeTaskListFromDB(name);
         } catch (Exception e) {
             e.printStackTrace();
         }

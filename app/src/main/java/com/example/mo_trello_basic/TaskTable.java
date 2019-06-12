@@ -3,6 +3,7 @@ package com.example.mo_trello_basic;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class TaskTable {
     int id;
     private int lastIdTaskList=-1;
@@ -19,6 +20,10 @@ public class TaskTable {
         id=idFromUser;
         name=nameFromUser;
         taskLists=new ArrayList<TaskList>();
+    }
+
+    public TaskTable(String name) {
+        this.name = name;
     }
 
     public int getLastIdTaskList() {
