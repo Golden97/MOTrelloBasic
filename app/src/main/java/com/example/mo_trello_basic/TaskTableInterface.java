@@ -9,8 +9,8 @@ import java.util.List;
 
 @Dao
 public interface TaskTableInterface {
-    @Query("SELECT * FROM TaskTables WHERE name=:id")
-    List<TaskTable> getAllTaskTables(int id);
+    @Query("SELECT * FROM TaskTables")
+    List<TaskTable> getAllTaskTables();
 
     @Insert
     void addTaskTable(TaskTable taskTable);
