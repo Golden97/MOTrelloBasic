@@ -1,11 +1,16 @@
 package com.example.mo_trello_basic;
 
+import android.arch.persistence.db.SupportSQLiteDatabase;
+import android.arch.persistence.room.Room;
+import android.arch.persistence.room.RoomDatabase;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -15,6 +20,8 @@ import android.widget.Toast;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -22,7 +29,9 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<String> items;
     private ArrayAdapter<String> itemsAdapter;
     private ListView lvItems;
-    public static OurDataBase db;
+
+    public static HashMap<String, Integer> taskTableMap = new HashMap<>();
+    public static Database db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         lvItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                TaskList.actualTaskTable = view.toString();
+                TaskList.actualTaskTable = itemsAdapter.getItem(position).toString();
                 openTableActivity();
             }
         });
@@ -46,18 +55,15 @@ public class MainActivity extends AppCompatActivity {
         lvItems.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                deleteTaskTable(view.toString());
+                deleteTaskTable(itemsAdapter, position);
                 items.remove(position);
                 itemsAdapter.notifyDataSetChanged();
                 return true;
             }
         });
 
-        db = new OurDataBase(getApplicationContext());
-        Cursor a=db.getTTfromDB();
-        while(a.moveToNext()){
-            itemsAdapter.add(a.getString(0));
-        }
+        db = Room.databaseBuilder(getApplicationContext(), Database.class, "trello.db")
+                .allowMainThreadQueries().build();
     }
 
     public void openTableActivity() {
@@ -69,24 +75,25 @@ public class MainActivity extends AppCompatActivity {
     public void onAddTaskTable(View v) {
         EditText etNewItem = findViewById(R.id.etNewItem);
         String itemText = etNewItem.getText().toString();
-        if(!itemText.equals("")) {
+        if (!itemText.equals("")) {
             itemsAdapter.add(itemText);
         }
         etNewItem.setText("");
 
-        TaskTable tb = new TaskTable(itemText);
+        TaskTable tb = new TaskTable(++counter, itemText);
         try {
-            db.addTaskTableToDB(tb);
+            db.taskTableDAO().addTaskTable(tb);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        try{
+            taskTableMap.put(tb.name, tb.id);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void deleteTaskTable(String name) {
-        try {
-            db.removeTaskTableFromDB(name);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void deleteTaskTable(ArrayAdapter<String> adapter, int pos) {
+        db.taskTableDAO().delete(adapter.getItem(pos));
     }
 }

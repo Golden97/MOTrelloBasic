@@ -1,29 +1,36 @@
 package com.example.mo_trello_basic;
 
-import java.util.List;
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.ForeignKey;
+import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
 
+import static android.arch.persistence.room.ForeignKey.CASCADE;
+
+@Entity(tableName = "TaskLists",
+        foreignKeys = @ForeignKey(entity = TaskTable.class,
+                parentColumns = "id",
+                childColumns = "taskTableID",
+                onDelete = CASCADE))
 public class TaskList  {
+
+    @PrimaryKey
     int id;
-    String name;
-    List<Task> taskList;
-    public static String actualTaskTable = null;
 
-    public TaskList() {}
+    @ColumnInfo(name = "name")
+    String name = "";
 
-    public TaskList(String name) {
-        this.name = name;
-    }
+    @ColumnInfo(name = "taskTableID")
+    int taskTableID;
 
-    public TaskList(int id, String name) {
+    @Ignore
+    public static String actualTaskTable;
+
+    public TaskList(int id, @NonNull String name, int taskTableID) {
         this.id = id;
         this.name = name;
-    }
-
-    void addTask(Task task){
-
-    }
-
-    void removeTask(Task task){
-
+        this.taskTableID = taskTableID;
     }
 }

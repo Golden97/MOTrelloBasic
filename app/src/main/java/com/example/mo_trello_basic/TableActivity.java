@@ -10,14 +10,20 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import static com.example.mo_trello_basic.MainActivity.db;
+import static com.example.mo_trello_basic.MainActivity.taskTableMap;
 
 public class TableActivity extends AppCompatActivity {
+    public static int counter = 0;
 
     private ArrayList<String> items;
     private ArrayAdapter<String> itemsAdapter;
     private ListView lvItems;
+
+    public static HashMap<String, Integer> taskListMap = new HashMap<>();
 
     @Override
         protected void onCreate(Bundle savedInstanceState) {
@@ -25,14 +31,19 @@ public class TableActivity extends AppCompatActivity {
             setContentView(R.layout.activity_table);
         lvItems = findViewById(R.id.lvTaskLists);
         items = new ArrayList<>();
-        itemsAdapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_list_item_1, items);
+        itemsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, items);
+
+        List<TaskList> list = db.taskListDAO().getAllTaskLists(taskTableMap.get(TaskList.actualTaskTable));
+        for(TaskList taskList : list) {
+            itemsAdapter.add(taskList.name);
+        }
+
         lvItems.setAdapter(itemsAdapter);
 
         lvItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Task.actualTaskList = view.toString();
+                Task.actualTaskList = itemsAdapter.getItem(position).toString();
                 openTaskListActivity();
             }
         });
@@ -40,12 +51,14 @@ public class TableActivity extends AppCompatActivity {
         lvItems.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                deleteTaskList(view.toString());
+                deleteTaskList(itemsAdapter, position);
                 items.remove(position);
                 itemsAdapter.notifyDataSetChanged();
                 return true;
             }
         });
+
+
     }
 
     public void openTaskListActivity() {
@@ -61,19 +74,19 @@ public class TableActivity extends AppCompatActivity {
         }
         etNewItem.setText("");
 
-        TaskList tl = new TaskList(itemText);
+        int id = 0;
         try {
-            db.addTaskListToDB(tl);
-        } catch (Exception e) {
+            id = taskTableMap.get(TaskList.actualTaskTable);
+        }catch (Exception e) {
             e.printStackTrace();
         }
+            TaskList tl = new TaskList(++counter, itemText, id);
+            db.taskListDAO().addTaskList(tl);
+            taskListMap.put(tl.name, tl.id);
+
     }
 
-    public void deleteTaskList(String name) {
-        try {
-            db.removeTaskListFromDB(name);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void deleteTaskList(ArrayAdapter<String> adapter, int pos) {
+        db.taskListDAO().delete(adapter.getItem(pos));
     }
 }

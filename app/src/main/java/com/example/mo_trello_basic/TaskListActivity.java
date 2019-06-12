@@ -10,10 +10,14 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static com.example.mo_trello_basic.MainActivity.db;
+import static com.example.mo_trello_basic.MainActivity.taskTableMap;
+import static com.example.mo_trello_basic.TableActivity.taskListMap;
 
 public class TaskListActivity extends AppCompatActivity {
+    public static int counter = 0;
 
     private ArrayList<String> items;
     private ArrayAdapter<String> itemsAdapter;
@@ -27,19 +31,25 @@ public class TaskListActivity extends AppCompatActivity {
         items = new ArrayList<>();
         itemsAdapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1, items);
+
+        List<Task> list = db.taskDAO().getAllTasks(taskListMap.get(Task.actualTaskList));
+        for(Task task : list) {
+            itemsAdapter.add(task.name);
+        }
+
         lvItems.setAdapter(itemsAdapter);
 
         lvItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+                deleteTask(itemsAdapter, position);
             }
         });
 
         lvItems.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                deleteTask(view.toString());
+                deleteTask(itemsAdapter, position);
                 items.remove(position);
                 itemsAdapter.notifyDataSetChanged();
                 return true;
@@ -59,21 +69,16 @@ public class TaskListActivity extends AppCompatActivity {
             itemsAdapter.add(itemText);
         }
         etNewItem.setText("");
-
-        Task task = new Task(itemText);
-
         try {
-            db.addTaskToDB(task);
+            int id = taskListMap.get(Task.actualTaskList);
+            Task tl = new Task(++counter, itemText, id);
+            db.taskDAO().addTask(tl);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void deleteTask(String name) {
-        try {
-            db.removeTaskFromDB(name);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void deleteTask(ArrayAdapter<String> adapter, int pos) {
+        db.taskDAO().delete(adapter.getItem(pos));
     }
 }
