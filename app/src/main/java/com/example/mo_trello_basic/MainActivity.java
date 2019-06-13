@@ -36,6 +36,9 @@ public class MainActivity extends AppCompatActivity {
         itemsAdapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1, items);
 
+        db = Room.databaseBuilder(getApplicationContext(), Database.class, "trello.db")
+                .allowMainThreadQueries().build();
+
         List<TaskTable> listt = db.taskTableDAO().getAllTaskTables();
         for(TaskTable task : listt) {
             itemsAdapter.add(task.name);
@@ -61,8 +64,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        db = Room.databaseBuilder(getApplicationContext(), Database.class, "trello.db")
-                .allowMainThreadQueries().build();
+
     }
 
     public void openTableActivity() {

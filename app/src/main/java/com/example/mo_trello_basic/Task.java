@@ -11,7 +11,7 @@ import static android.arch.persistence.room.ForeignKey.CASCADE;
 
 @Entity(tableName = "Tasks",
         foreignKeys = @ForeignKey(entity = TaskList.class,
-                parentColumns = "id",
+                parentColumns = "name",
                 childColumns = "taskListID",
                 onDelete = CASCADE))
 public class Task {
@@ -23,12 +23,12 @@ public class Task {
     String name;
 
     @ColumnInfo(name = "taskListID")
-    int taskListID;
+    String taskListID;
 
     @Ignore
     public static String actualTaskList = null;
 
-    public Task(int id, @NonNull String name, int taskListID) {
+    public Task(int id, @NonNull String name, String taskListID) {
         this.id = id;
         this.name = name;
         this.taskListID = taskListID;

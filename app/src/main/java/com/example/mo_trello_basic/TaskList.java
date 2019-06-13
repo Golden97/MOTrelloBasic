@@ -11,24 +11,23 @@ import static android.arch.persistence.room.ForeignKey.CASCADE;
 
 @Entity(tableName = "TaskLists",
         foreignKeys = @ForeignKey(entity = TaskTable.class,
-                parentColumns = "id",
+                parentColumns = "name",
                 childColumns = "taskTableID",
-                onDelete = CASCADE))
+                onDelete = CASCADE),primaryKeys = "name")
 public class TaskList  {
 
-    @PrimaryKey
     int id;
 
-    @ColumnInfo(name = "name")
+    @NonNull
     String name = "";
 
     @ColumnInfo(name = "taskTableID")
-    int taskTableID;
+    String taskTableID;
 
     @Ignore
     public static String actualTaskTable;
 
-    public TaskList(int id, @NonNull String name, int taskTableID) {
+    public TaskList(int id, @NonNull String name, String taskTableID) {
         this.id = id;
         this.name = name;
         this.taskTableID = taskTableID;

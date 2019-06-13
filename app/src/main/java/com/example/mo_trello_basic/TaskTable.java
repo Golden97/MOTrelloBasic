@@ -5,13 +5,15 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
-@Entity(tableName = "TaskTables")
+@Entity(tableName = "TaskTables",primaryKeys = "name")
 public class TaskTable {
 
-    @PrimaryKey
+
+    //@ColumnInfo(name = "id")
     int id;
 
-    @ColumnInfo(name = "name")
+
+    @NonNull
     String name;
 
     public TaskTable(int id, String name) {

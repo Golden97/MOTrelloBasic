@@ -11,7 +11,7 @@ import java.util.List;
 @Dao
 public interface TaskInterface {
     @Query("SELECT * FROM Tasks WHERE taskListID=:id")
-    List<Task> getAllTasks(int id);
+    List<Task> getAllTasks(String id);
 
     @Insert
     void addTask(Task task);

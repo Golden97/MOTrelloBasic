@@ -10,7 +10,7 @@ import java.util.List;
 @Dao
 public interface TaskListInterface {
     @Query("SELECT * FROM TaskLists WHERE taskTableID=:id")
-    List<TaskList> getAllTaskLists(int id);
+    List<TaskList> getAllTaskLists(String id);
 
     @Insert
     void addTaskList(TaskList taskList);

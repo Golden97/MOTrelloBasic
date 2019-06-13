@@ -8,6 +8,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,7 +34,8 @@ public class TableActivity extends AppCompatActivity {
         items = new ArrayList<>();
         itemsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, items);
 
-        List<TaskList> list = db.taskListDAO().getAllTaskLists(taskTableMap.get(TaskList.actualTaskTable));
+        List<TaskList> list = db.taskListDAO().getAllTaskLists(
+                TaskList.actualTaskTable);
         for(TaskList taskList : list) {
             itemsAdapter.add(taskList.name);
         }
@@ -43,7 +45,7 @@ public class TableActivity extends AppCompatActivity {
         lvItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Task.actualTaskList = itemsAdapter.getItem(position).toString();
+                Task.actualTaskList = itemsAdapter.getItem(position);
                 openTaskListActivity();
             }
         });
@@ -74,15 +76,18 @@ public class TableActivity extends AppCompatActivity {
         }
         etNewItem.setText("");
 
-        int id = 0;
+        //int id = 0;
+        //try {
+          //  id = taskTableMap.get(TaskList.actualTaskTable);
+        //}catch (Exception e) {
+          //  e.printStackTrace();
+        //}
         try {
-            id = taskTableMap.get(TaskList.actualTaskTable);
-        }catch (Exception e) {
-            e.printStackTrace();
-        }
-            TaskList tl = new TaskList(++counter, itemText, id);
+            TaskList tl = new TaskList(++counter, itemText, TaskList.actualTaskTable);
             db.taskListDAO().addTaskList(tl);
-            taskListMap.put(tl.name, tl.id);
+        }catch (Exception e) {
+            Toast.makeText(this,"this tasklist already exists",Toast.LENGTH_LONG).show();
+        }
 
     }
 
